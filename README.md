@@ -1,1 +1,1 @@
-https://viktorermakov.github.io/js30_audio_player/
+https://viktorermakov.github.io/js30_audio_player/js30_audio_player
