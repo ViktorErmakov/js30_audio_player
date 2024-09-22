@@ -18,6 +18,7 @@ html {
     background-image: url(assets/img/lemonade.png);
     background-repeat: no-repeat;
     background-size: cover;
+    transition: all 2s ease-out;
 }
 
 .blur {
@@ -28,23 +29,132 @@ html {
 
 .content {
     position: fixed;
-    /* border: .1rem solid black; */
+    /* display: flex; */
+    max-width: 34rem;
+    max-height: 46rem;
+    width: 100%;
+    height: 100%;
     border-radius: 1rem;
     overflow: hidden;
     box-shadow: 0 0 .8rem 0 rgba(0, 0, 0);
 }
 
-.play {
+.picture {
+    display: flex;
+    /* max-width: 34rem; */
+    width: 100%;
+    height: 34rem;
+    transition: all 1s ease-out;
+}
+
+.animation {
+    transform: rotateY(-90deg);
+}
+
+.player {
+    min-height: 12rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-image: linear-gradient(90deg, #393E46, #9D9D9D);
+}
+
+.first {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 7rem;
+}
+
+.center {
+    max-width: 15rem;
+    width: 100%;
+    max-height: 4.3rem;
+}
+
+h1 {
+    color: rgb(193, 255, 6);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.title {
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.7rem;
+}
+
+.PlayPause {
     max-width: 5rem;
     max-height: 5rem;
+    filter: invert(1);
+    opacity: 1;
+}
+
+.PlayPause:hover {
+    opacity: .5;
+    transition: opacity .5s linear;
+}
+
+.isPlay {
+    opacity: .5;
+    content: url('assets/svg/pause.png');
 }
 
 .button {
     max-width: 3rem;
     max-height: 3rem;
-    background-color: aliceblue;
+    filter: invert(1);
+    opacity: 1;
 }
 
-.play {
-    background-color: aliceblue;
+.button:hover {
+    opacity: .5;
+    transition: opacity .5s linear;
 }
+
+.right {
+    display: flex;
+    flex-direction: column;
+}
+
+.second {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3rem;
+}
+
+#progress-bar {
+    height: .5rem;
+    background: #000000;
+    width: 20rem;
+    border-radius: 3rem;
+    /* -webkit-appearance: none; */
+    appearance: none;
+}
+
+#progress-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    margin-top: -.3rem;
+    margin-left: 0;
+    height: 1rem;
+    width: .7rem;
+    border: 0;
+    background: -webkit-linear-gradient(45deg, rgb(213, 213, 213), rgb(193, 255, 6));
+    border-radius: 3rem;
+    cursor: pointer;
+  }
+  
+  #progress-bar::-webkit-slider-runnable-track {
+    /* -webkit-appearance: none; */
+    /* appearance: none; */
+    cursor: pointer;
+    max-height: 5px;
+    border-radius: 30px;
+  }
+  
+  #progress-bar:focus {
+    outline: none;
+  }
