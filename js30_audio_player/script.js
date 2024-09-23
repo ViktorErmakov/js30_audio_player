@@ -34,27 +34,36 @@ contentAudio = {
 content.push(contentAudio);
 
 const wrapper = document.querySelector('.wrapper');
-const audio = document.querySelector('audio');
 const playButton = document.querySelector('.PlayPause');
 const nextButton = document.querySelector('.forward');
 const prevButton = document.querySelector('.backward');
+const blurBlock = document.querySelector('.blur');
+let length = document.querySelector('.length');
+let time = document.querySelector('.time');
 let audioArtist = document.querySelector('h1');
 let audioSong = document.querySelector('.title');
 let image = document.querySelector('.picture');
+const progressBar = document.querySelector('#progress-bar');
+const audio = new Audio();
+let piece = 0;
 
-audio.src = content[playNum].audioSrc;
-audioSong.textContent = content[playNum].audioSong;
-audioArtist.textContent = content[playNum].audioArtist;
-wrapper.style.backgroundImage = `url(${content[playNum].imgSrc})`;
-image.src = `${content[playNum].imgSrc}`;
-// image.style.backgroundImage = `url(${content[playNum].imgSrc})`;
 
 
 function playAudio() {
     playButton.classList.toggle('isPlay');
 
     if (playButton.classList.contains('isPlay')) {
-        // audio.currentTime = 0;
+        audio.currentTime = 0;
+        // length.textContent = convertTime(audio.duration);
+        // progressBar.max = parseInt(audio.duration);
+
+        setInterval(() => {
+            time.textContent = convertTime(audio.currentTime);
+            piece = audio.currentTime / audio.duration;
+            
+            
+        }, 1000);
+
         audio.play();
     } else {
         audio.pause();
@@ -62,51 +71,78 @@ function playAudio() {
 }
 
 function playNext() {
-    
-    playButton.classList.toggle('isPlay');
+
+    playButton.classList.remove('isPlay');
     if (playNum === content.length - 1) {
         playNum = 0;
     } else {
         playNum += 1;
     };
-    audio.src = content[playNum].audioSrc;
-    audioSong.textContent = content[playNum].audioSong;
-    audioArtist.textContent = content[playNum].audioArtist;
-    wrapper.style.backgroundImage = `url(${content[playNum].imgSrc})`;
 
-    image.classList.add('animation');
-    setTimeout(() => {
-        image.src = `${content[playNum].imgSrc}`;
-        image.classList.remove('animation');
-    }, 1000);
-    
-    playButton.classList.remove('isPlay');
-    playAudio();
+    playContinue();
+
 }
 
 function playPrev() {
-    
-    playButton.classList.toggle('isPlay');
+
+    playButton.classList.remove('isPlay');
     if (playNum === 0) {
         playNum = content.length - 1;
     } else {
         playNum -= 1;
     }
-    audio.src = content[playNum].audioSrc;
-    audioSong.textContent = content[playNum].audioSong;
-    audioArtist.textContent = content[playNum].audioArtist;
-    wrapper.style.backgroundImage = `url(${content[playNum].imgSrc})`;
-    
+
+    playContinue();
+
+}
+
+function playContinue() {
+
+    fillContent();
+
     image.classList.add('animation');
     setTimeout(() => {
         image.src = `${content[playNum].imgSrc}`;
         image.classList.remove('animation');
     }, 1000);
-    
-    playButton.classList.remove('isPlay');
+
     playAudio();
+
+}
+
+function fillContent() {
+
+    audio.src = content[playNum].audioSrc;
+    audioSong.textContent = content[playNum].audioSong;
+    audioArtist.textContent = content[playNum].audioArtist;
+    wrapper.style.backgroundImage = `url(${content[playNum].imgSrc})`;
+
+}
+
+function progressBarClick() {
+    console.log('progressBar.textContent')
+}
+
+function convertTime(inputSeconds) {
+    let sec = Math.floor(inputSeconds % 60);
+    if (sec < 10) {
+        sec = '0' + sec;
+    }
+    let min = Math.floor(inputSeconds / 60);
+    return min + ':' + sec;
 }
 
 playButton.addEventListener('click', playAudio);
-nextButton.addEventListener('click', playNext)
-prevButton.addEventListener('click', playPrev)
+nextButton.addEventListener('click', playNext);
+prevButton.addEventListener('click', playPrev);
+progressBar.addEventListener('click', progressBarClick);
+image.src = `${content[playNum].imgSrc}`;
+fillContent();
+
+audio.addEventListener("loadeddata", () => {
+        // console.log(audio.duration);
+        // console.log(new Date(0, 0, 0, 0, 0, 0, audio.duration));
+        // console.log(new Date(0, 0, 0, 0, 0, 0, audio.duration).getMinutes());
+        length.textContent = convertTime(audio.duration);
+    }, false
+);
