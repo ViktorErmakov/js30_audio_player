@@ -47,21 +47,11 @@ const progressBar = document.querySelector('#progress-bar');
 const audio = new Audio();
 let piece = 0;
 
-
-
 function playAudio() {
     playButton.classList.toggle('isPlay');
 
     if (playButton.classList.contains('isPlay')) {
-        // audio.currentTime = 0;
         progressBar.value = audio.currentTime;
-        
-        // Переделать на прослушывание события изменения времени
-        setInterval(() => {
-            time.textContent = convertTime(audio.currentTime);
-            progressBar.value = audio.currentTime;
-        }, 1000);
-
         audio.play();
     } else {
         audio.pause();
@@ -109,12 +99,10 @@ function playContinue() {
 }
 
 function fillContent() {
-
     audio.src = content[playNum].audioSrc;
     audioSong.textContent = content[playNum].audioSong;
     audioArtist.textContent = content[playNum].audioArtist;
     wrapper.style.backgroundImage = `url(${content[playNum].imgSrc})`;
-
 }
 
 function progressBarChange() {
@@ -140,11 +128,17 @@ function audioEnd(){
     playNext();
 }
 
+function timeupdate() {
+    time.textContent = convertTime(audio.currentTime);
+    progressBar.value = audio.currentTime;
+}
+
+
 playButton.addEventListener('click', playAudio);
 nextButton.addEventListener('click', playNext);
 prevButton.addEventListener('click', playPrev);
 progressBar.addEventListener('change', progressBarChange);
 audio.addEventListener('ended', audioEnd)
+audio.addEventListener('timeupdate', timeupdate);
 image.src = `${content[playNum].imgSrc}`;
 fillContent();
-
