@@ -53,15 +53,13 @@ function playAudio() {
     playButton.classList.toggle('isPlay');
 
     if (playButton.classList.contains('isPlay')) {
-        audio.currentTime = 0;
-        // length.textContent = convertTime(audio.duration);
-        // progressBar.max = parseInt(audio.duration);
-
+        // audio.currentTime = 0;
+        progressBar.value = audio.currentTime;
+        
+        // Переделать на прослушывание события изменения времени
         setInterval(() => {
             time.textContent = convertTime(audio.currentTime);
-            piece = audio.currentTime / audio.duration;
-            
-            
+            progressBar.value = audio.currentTime;
         }, 1000);
 
         audio.play();
@@ -119,8 +117,8 @@ function fillContent() {
 
 }
 
-function progressBarClick() {
-    console.log('progressBar.textContent')
+function progressBarChange() {
+    audio[this.name] = this.value;
 }
 
 function convertTime(inputSeconds) {
@@ -132,17 +130,21 @@ function convertTime(inputSeconds) {
     return min + ':' + sec;
 }
 
+audio.addEventListener("loadeddata", () => {
+        length.textContent = convertTime(audio.duration);
+        progressBar.max = audio.duration;
+    }, false
+);
+
+function audioEnd(){
+    playNext();
+}
+
 playButton.addEventListener('click', playAudio);
 nextButton.addEventListener('click', playNext);
 prevButton.addEventListener('click', playPrev);
-progressBar.addEventListener('click', progressBarClick);
+progressBar.addEventListener('change', progressBarChange);
+audio.addEventListener('ended', audioEnd)
 image.src = `${content[playNum].imgSrc}`;
 fillContent();
 
-audio.addEventListener("loadeddata", () => {
-        // console.log(audio.duration);
-        // console.log(new Date(0, 0, 0, 0, 0, 0, audio.duration));
-        // console.log(new Date(0, 0, 0, 0, 0, 0, audio.duration).getMinutes());
-        length.textContent = convertTime(audio.duration);
-    }, false
-);
